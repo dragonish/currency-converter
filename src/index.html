@@ -387,16 +387,16 @@
       const CURRENCY_ORDER_KEY = 'currencyOrder'; // 新增：用于存储排序的 LocalStorage Key
 
       // 原始币种列表（现在是一个映射，用于查找详细信息）
-      const allCurrenciesMap = {
-        USD:{name:'美元',country:'us'}, EUR:{name:'欧元',country:'eu'}, CNY:{name:'人民币',country:'cn'},
-        JPY:{name:'日元',country:'jp'}, GBP:{name:'英镑',country:'gb'}, AUD:{name:'澳元',country:'au'},
-        CAD:{name:'加元',country:'ca'}, CHF:{name:'瑞士法郎',country:'ch'}, HKD:{name:'港币',country:'hk'},
-        SGD:{name:'新加坡元',country:'sg'}, KRW:{name:'韩元',country:'kr'}, INR:{name:'印度卢比',country:'in'},
-        THB:{name:'泰铢',country:'th'}, VND:{name:'越南盾',country:'vn'}, RUB:{name:'俄罗斯卢布',country:'ru'},
-        ZAR:{name:'南非兰特',country:'za'}, TWD:{name:'新台币',country:'tw'}, IDR:{name:'印尼盾',country:'id'},
-        MYR:{name:'马来西亚林吉特',country:'my'}, PHP:{name:'菲律宾比索',country:'ph'},
-        TRY:{name:'土耳其里拉',country:'tr'}
-      };
+        const allCurrenciesMap = {
+          USD:{name:'美元',country:'us',symbol:'$'}, EUR:{name:'欧元',country:'eu',symbol:'€'}, CNY:{name:'人民币',country:'cn',symbol:'¥'},
+          JPY:{name:'日元',country:'jp',symbol:'¥'}, GBP:{name:'英镑',country:'gb',symbol:'£'}, AUD:{name:'澳元',country:'au',symbol:'$'},
+          CAD:{name:'加元',country:'ca',symbol:'$'}, CHF:{name:'瑞士法郎',country:'ch',symbol:'Fr'}, HKD:{name:'港币',country:'hk',symbol:'$'},
+          SGD:{name:'新加坡元',country:'sg',symbol:'$'}, KRW:{name:'韩元',country:'kr',symbol:'₩'}, INR:{name:'印度卢比',country:'in',symbol:'₹'},
+          THB:{name:'泰铢',country:'th',symbol:'฿'}, VND:{name:'越南盾',country:'vn',symbol:'₫'}, RUB:{name:'俄罗斯卢布',country:'ru',symbol:'₽'},
+          ZAR:{name:'南非兰特',country:'za',symbol:'R'}, TWD:{name:'新台币',country:'tw',symbol:'NT$'}, IDR:{name:'印尼盾',country:'id',symbol:'Rp'},
+          MYR:{name:'马来西亚林吉特',country:'my',symbol:'RM'}, PHP:{name:'菲律宾比索',country:'ph',symbol:'₱'},
+          TRY:{name:'土耳其里拉',country:'tr',symbol:'₺'}
+        };
 
       let currentCurrencyCodes = Object.keys(allCurrenciesMap); // 存储当前展示的币种代码数组（用于排序）
       let exchangeRates = {}, baseCurrency = 'USD', isUpdating = false, myChart = null;
@@ -554,7 +554,7 @@
             <div class="currency-item" data-code="${code}">
               <span class="drag-handle" title="拖拽以重新排序">⋮⋮</span> <div class="currency-left">
                 <img src="https://flagcdn.com/w40/${info.country}.png" class="flag" alt="${code}">
-                <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name}</div></div>
+                <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
               </div>
               <div class="currency-middle" id="rate-${code}" onclick="showHistoryChart('${code}')">汇率: 加载中...</div>
               <div class="currency-right"><input type="text" id="input-${code}" class="currency-input" placeholder="0.00"
