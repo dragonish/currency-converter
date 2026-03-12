@@ -797,7 +797,7 @@
         list.innerHTML += `
             <div class="currency-item" data-code="${code}">
               <span class="drag-handle" title="拖拽以重新排序">⋮⋮</span> <div class="currency-left">
-                <img src="https://flagcdn.com/w40/${info.country}.png" class="flag" alt="${code}">
+                <img src="/icon/${info.country}.png" class="flag" alt="${code}">
                 <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
               </div>
               <div class="currency-middle" id="rate-${code}" onclick="showHistoryChart('${code}')">汇率: 加载中...</div>
