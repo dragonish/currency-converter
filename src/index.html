@@ -140,11 +140,15 @@
       opacity: 0.95;
     }
 
-    /* 右上角主题切换按钮 */
-    .theme-toggle {
+    /* 主题下拉菜单 */
+    .theme-dropdown {
       position: absolute;
       right: 18px;
       top: 18px;
+      z-index: 100;
+    }
+
+    .theme-toggle {
       background: rgba(255, 255, 255, 0.12);
       border: none;
       color: white;
@@ -163,8 +167,69 @@
       transform: translateY(-3px);
     }
 
+    .theme-toggle::after {
+      content: '▼';
+      font-size: 0.7em;
+      margin-left: 4px;
+    }
+
     [data-theme="dark"] .theme-toggle {
       background: rgba(255, 255, 255, 0.06);
+    }
+
+    .theme-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 6px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--shadow);
+      min-width: 130px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all .2s ease;
+      overflow: hidden;
+    }
+
+    .theme-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .theme-menu-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background .15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-menu-item:hover {
+      background: var(--input-bg);
+    }
+
+    .theme-menu-item.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    [data-theme="dark"] .theme-menu-item.active {
+      background: rgba(255, 215, 0, 0.2);
+      color: #ffd700;
+    }
+
+    .theme-menu-item:first-child {
+      border-radius: 10px 10px 0 0;
+    }
+
+    .theme-menu-item:last-child {
+      border-radius: 0 0 10px 10px;
     }
 
     .content {
@@ -540,6 +605,11 @@
         top: 12px;
       }
 
+      .theme-dropdown {
+        right: 12px;
+        top: 12px;
+      }
+
       .history-stats {
         flex-wrap: wrap;
       }
@@ -564,7 +634,14 @@
       <h1>💱 实时汇率转换器</h1>
       <p>支持多币种实时转换，数据来源于多个权威汇率API</p>
 
-      <button id="themeToggle" class="theme-toggle" aria-label="切换主题" title="单击切换主题（跟随系统 → 深色 → 浅色）">🖥️ 跟随系统</button>
+      <div class="theme-dropdown">
+        <button id="themeToggle" class="theme-toggle" aria-label="选择主题">🖥️ 跟随系统</button>
+        <div id="themeMenu" class="theme-menu">
+          <div class="theme-menu-item" data-value="system">🖥️ 跟随系统</div>
+          <div class="theme-menu-item" data-value="dark">🌙 深色</div>
+          <div class="theme-menu-item" data-value="light">🌞 浅色</div>
+        </div>
+      </div>
 
       <button id="refreshBtn" class="refresh-btn" onclick="refreshRates()">🔄 刷新汇率</button>
     </div>
@@ -605,12 +682,15 @@
 
     function updateThemeToggleUI(savedTheme, effective) {
       const btn = document.getElementById('themeToggle');
+      const menuItems = document.querySelectorAll('.theme-menu-item');
       let label = '';
       if (savedTheme === 'system') label = '🖥️ 跟随系统';
       else if (savedTheme === 'dark') label = '🌙 深色';
       else label = '🌞 浅色';
       btn.innerText = label;
-      btn.title = `当前: ${label}（显示: ${effective === 'dark' ? '深色' : '浅色'}）。单击切换主题（跟随系统 → 深色 → 浅色）`;
+      menuItems.forEach(item => {
+        item.classList.toggle('active', item.dataset.value === savedTheme);
+      });
     }
 
     function loadThemeUI() {
@@ -619,13 +699,16 @@
       updateThemeToggleUI(saved, effective);
     }
 
-    function cycleTheme() {
-      const cur = localStorage.getItem(THEME_KEY) || 'system';
-      const next = cur === 'system' ? 'dark' : cur === 'dark' ? 'light' : 'system';
-      localStorage.setItem(THEME_KEY, next);
-      applyTheme(next); // 调用头部的 applyTheme
-      const effective = next === 'system' ? getSystemTheme() : next;
-      updateThemeToggleUI(next, effective); // 更新 UI
+    function setTheme(theme) {
+      localStorage.setItem(THEME_KEY, theme);
+      applyTheme(theme);
+      const effective = theme === 'system' ? getSystemTheme() : theme;
+      updateThemeToggleUI(theme, effective);
+      document.getElementById('themeMenu').classList.remove('show');
+    }
+
+    function toggleThemeMenu() {
+      document.getElementById('themeMenu').classList.toggle('show');
     }
 
     // 当系统深浅色模式改变时，如果用户选择的是跟随系统（system），就自动更新
@@ -636,7 +719,7 @@
           const saved = localStorage.getItem(THEME_KEY) || 'system';
           if (saved === 'system') {
             applyTheme('system');
-            loadThemeUI(); // 系统模式变化时也要更新 UI
+            loadThemeUI();
           }
         });
       }
@@ -644,7 +727,7 @@
         const saved = localStorage.getItem(THEME_KEY) || 'system';
         if (saved === 'system') {
           applyTheme('system');
-          loadThemeUI(); // 系统模式变化时也要更新 UI
+          loadThemeUI();
         }
       });
       }
@@ -652,7 +735,25 @@
 
     // 确保 DOM 加载后再添加事件监听器
     window.addEventListener('load', () => {
-      document.getElementById('themeToggle').addEventListener('click', cycleTheme);
+      const themeToggle = document.getElementById('themeToggle');
+      const themeMenu = document.getElementById('themeMenu');
+      const menuItems = document.querySelectorAll('.theme-menu-item');
+
+      themeToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleThemeMenu();
+      });
+
+      menuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setTheme(item.dataset.value);
+        });
+      });
+
+      document.addEventListener('click', () => {
+        themeMenu.classList.remove('show');
+      });
     });
 
     /* ------------------- 核心程序（汇率 & 拖拽排序） ------------------- */
