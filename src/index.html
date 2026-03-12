@@ -248,6 +248,15 @@
       flex-shrink: 0;
     }
 
+    /* 可拖拽手柄样式 */
+    .drag-handle {
+      cursor: grab;
+      font-size: 1.2em;
+      color: var(--handle-color);
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
     .flag {
       width: 36px;
       height: 24px;
@@ -506,6 +515,15 @@
       .currency-item {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .currency-left {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .drag-handle {
+        margin-right: 10px;
       }
 
       .currency-middle {
@@ -806,7 +824,8 @@
 
         list.innerHTML += `
             <div class="currency-item" data-code="${code}">
-              <span class="drag-handle" title="拖拽以重新排序">⋮⋮</span> <div class="currency-left">
+              <div class="currency-left">
+                <span class="drag-handle" title="拖拽以重新排序">⋮⋮</span>
                 <img src="/icon/${info.country}.png" class="flag" alt="${code}">
                 <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
               </div>
