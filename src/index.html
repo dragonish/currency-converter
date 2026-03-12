@@ -286,13 +286,13 @@
       font-size: 0.9em;
       font-family: 'Consolas', 'Monaco', monospace;
       color: var(--text-color);
-      cursor: pointer;
     }
 
     .currency-middle-inner {
       display: inline-block;
       text-align: left;
       min-width: 140px;
+      cursor: pointer;
     }
 
     .currency-middle:hover {
@@ -829,7 +829,7 @@
                 <img src="/icon/${info.country}.png" class="flag" alt="${code}">
                 <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
               </div>
-              <div class="currency-middle" id="rate-${code}" onclick="showHistoryChart('${code}')"><span class="currency-middle-inner">汇率: 加载中...</span></div>
+              <div class="currency-middle" id="rate-${code}"><span class="currency-middle-inner" title="点击查看历史汇率" onclick="showHistoryChart('${code}')">汇率: 加载中...</span></div>
               <div class="currency-right"><input type="text" id="input-${code}" class="currency-input" placeholder="0.00"
                 oninput="onInputChange('${code}')" onfocus="onInputFocus('${code}')"></div>
             </div>`;
@@ -910,14 +910,14 @@
         const inner = el.querySelector('.currency-middle-inner');
         if (!inner) return;
 
-        if (c === baseCurrency) inner.textContent = '汇率: 1.0000 (基准) (点击查看)';
+        if (c === baseCurrency) inner.textContent = '汇率: 1.0000 (基准)';
         else {
           if (!exchangeRates[baseCurrency] || !exchangeRates[c]) {
             inner.textContent = '汇率: 数据不可用';
             return;
           }
           const r = exchangeRates[c] / exchangeRates[baseCurrency];
-          inner.textContent = r ? `汇率: ${r.toFixed(4)} (点击查看)` : '汇率: 数据不可用';
+          inner.textContent = r ? `汇率: ${r.toFixed(4)}` : '汇率: 数据不可用';
         }
       });
     }
