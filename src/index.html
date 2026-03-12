@@ -244,6 +244,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 180px;
+      flex-shrink: 0;
     }
 
     .flag {
@@ -270,10 +272,18 @@
 
     .currency-middle {
       flex: 1;
+      width: 180px;
       text-align: center;
       font-size: 0.9em;
+      font-family: 'Consolas', 'Monaco', monospace;
       color: var(--text-color);
       cursor: pointer;
+    }
+
+    .currency-middle-inner {
+      display: inline-block;
+      text-align: left;
+      min-width: 140px;
     }
 
     .currency-middle:hover {
@@ -800,7 +810,7 @@
                 <img src="/icon/${info.country}.png" class="flag" alt="${code}">
                 <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
               </div>
-              <div class="currency-middle" id="rate-${code}" onclick="showHistoryChart('${code}')">汇率: 加载中...</div>
+              <div class="currency-middle" id="rate-${code}" onclick="showHistoryChart('${code}')"><span class="currency-middle-inner">汇率: 加载中...</span></div>
               <div class="currency-right"><input type="text" id="input-${code}" class="currency-input" placeholder="0.00"
                 oninput="onInputChange('${code}')" onfocus="onInputFocus('${code}')"></div>
             </div>`;
@@ -876,16 +886,19 @@
     function updateRateDisplays() {
       currentCurrencyCodes.forEach(c => {
         const el = document.getElementById(`rate-${c}`);
-        if (!el) return; // 跳过未渲染的元素
+        if (!el) return;
 
-        if (c === baseCurrency) el.textContent = '汇率: 1.0000 (基准) (点击查看)';
+        const inner = el.querySelector('.currency-middle-inner');
+        if (!inner) return;
+
+        if (c === baseCurrency) inner.textContent = '汇率: 1.0000 (基准) (点击查看)';
         else {
           if (!exchangeRates[baseCurrency] || !exchangeRates[c]) {
-            el.textContent = '汇率: 数据不可用';
+            inner.textContent = '汇率: 数据不可用';
             return;
           }
           const r = exchangeRates[c] / exchangeRates[baseCurrency];
-          el.textContent = r ? `汇率: ${r.toFixed(4)} (点击查看)` : '汇率: 数据不可用';
+          inner.textContent = r ? `汇率: ${r.toFixed(4)} (点击查看)` : '汇率: 数据不可用';
         }
       });
     }
