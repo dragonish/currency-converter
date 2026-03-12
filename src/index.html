@@ -244,7 +244,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      width: 180px;
+      width: 200px;
       flex-shrink: 0;
     }
 
@@ -827,7 +827,7 @@
               <div class="currency-left">
                 <span class="drag-handle" title="拖拽以重新排序">⋮⋮</span>
                 <img src="/icon/${info.country}.png" class="flag" alt="${code}">
-                <div class="currency-info"><div class="currency-code">${code}</div><div class="currency-name">${info.name} (${info.symbol})</div></div>
+                <div class="currency-info"><div class="currency-code">${code} (${info.symbol})</div><div class="currency-name">${info.name}</div></div>
               </div>
               <div class="currency-middle" id="rate-${code}"><span class="currency-middle-inner" title="点击查看历史汇率" onclick="showHistoryChart('${code}')">汇率: 加载中...</span></div>
               <div class="currency-right"><input type="text" id="input-${code}" class="currency-input" placeholder="0.00"
