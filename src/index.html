@@ -686,7 +686,7 @@
       // Source 2: Frankfurter (EUR Base) - 备用源
       {
         name: 'Frankfurter',
-        url: 'https://api.frankfurter.app/latest',
+        url: 'https://api.frankfurter.dev/v1/latest',
         parseRates: d => d.rates,
         isUSD: false // 基础货币是 EUR
       }
@@ -694,7 +694,7 @@
 
     // 历史数据 API (目前仅保留 Frankfurter)
     const historyApi = {
-      url: 'https://api.frankfurter.app',
+      url: 'https://api.frankfurter.dev/v1',
       // 优化后的 fetchHistory: 一次性获取指定日期范围数据
       fetchHistory: async (base, target, days) => {
         const today = new Date();
