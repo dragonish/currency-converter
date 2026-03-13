@@ -1,7 +1,7 @@
 # 多币种汇率转换工具
 
 <!-- markdownlint-disable no-inline-html -->
-<img alt="icon" width="128" src="images/icon.png" style="display: block; margin: auto;" />
+<img alt="icon" width="68" src="images/icon.png" style="display: block; margin: auto;" />
 
 这是一款支持多币种实时兑换的网页工具，界面美观，交互友好，支持深色/浅色/跟随系统三种主题模式。汇率数据来源于多个权威 API，并在网络不可用时提供本地模拟数据，保证随时可用。
 
