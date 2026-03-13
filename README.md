@@ -5,8 +5,6 @@
 
 这是一款支持多币种实时兑换的网页工具，界面美观，交互友好，支持深色/浅色/跟随系统三种主题模式。汇率数据来源于多个权威 API，并在网络不可用时提供本地模拟数据，保证随时可用。
 
-> [源代码](https://github.com/kejilion/Website_source_code/blob/main/currency-converter/index.html)
-
 ## 核心功能
 
 ### 实时汇率获取
@@ -46,3 +44,9 @@
 浅色（蓝白风格）、深色（金黑风格）、跟随系统模式自由切换。
 
 自动适配系统主题变化。
+
+## 致谢
+
+- [kejilion/Website_source_code](https://github.com/kejilion/Website_source_code/blob/main/currency-converter/index.html)
+- [lineofflight/frankfurter](https://github.com/lineofflight/frankfurter)
+- [ExchangeRate-API](https://www.exchangerate-api.com/)
