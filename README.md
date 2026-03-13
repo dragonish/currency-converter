@@ -49,6 +49,20 @@
 
 自动适配系统主题变化。
 
+## Docker 部署
+
+```bash
+# pull
+docker pull giterhub/giterhub/currency-converter:latest
+
+# run
+docker run -d \
+    --name giterhub/currency-converter \
+    --restart unless-stopped \
+    -p 80:80 \
+    giterhub/giterhub/currency-converter:latest
+```
+
 ## 致谢
 
 - [kejilion/Website_source_code](https://github.com/kejilion/Website_source_code/blob/main/currency-converter/index.html)
