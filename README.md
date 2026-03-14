@@ -53,14 +53,14 @@
 
 ```bash
 # pull
-docker pull giterhub/giterhub/currency-converter:latest
+docker pull giterhub/currency-converter:latest
 
 # run
 docker run -d \
-    --name giterhub/currency-converter \
+    --name currency-converter \
     --restart unless-stopped \
     -p 80:80 \
-    giterhub/giterhub/currency-converter:latest
+    giterhub/currency-converter:latest
 ```
 
 ## 致谢
